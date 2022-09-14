@@ -1,0 +1,173 @@
+<html>
+<head>
+<title> Pathfinding visualizer </title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+let startFlag=1;
+  let endFlag=1;
+  let startNode="C-520";
+  let endNode="C-530";
+  </script>
+
+
+<style>
+#C-520{background-color:green;}
+#C-530{background-color:red;}
+#header{background-color:rgb(200, 255, 0);
+        
+        border:2px solid red;
+        }
+#b1{
+  background-color: rgb(0, 255, 191);
+  margin-right:30px;
+  padding:10px 20px;
+  display:inline-block;
+  margin:4px 2px;
+  cursor:pointer;
+  border-radius:16px;
+
+}
+#b2{
+  background-color: rgb(0, 255, 191);
+  margin-left:30px;
+  padding:10px 20px;
+  display:inline-block;
+  margin:4px 2px;
+
+  border-radius:16px;
+  cursor:pointer;
+}
+#reset{
+    background-color: rgb(0, 255, 191);
+    padding:5px 10px;
+  display:inline-block;
+  margin:2px 1px;
+  cursor:pointer;
+  border-radius:16px;
+}
+#resetAll{
+    background-color: rgb(0, 255, 191);
+    padding:5px 10px;
+  display:inline-block;
+  margin:2px 1px;
+  cursor:pointer;
+  border-radius:16px;
+}
+
+
+
+</style>
+</head>
+<body leftmargin="70">
+<h1 id="header" align="center">Welcome to the Pathfinding Visualizer</h1>
+
+<center><button id="b1" onclick=letsVisualize(startNode,endNode) onmouseout=clickup()><b>Visualize Dijkstra's algorithm </b> </button>
+      
+  <button id="b2" onclick=letsVisualizeBfs(startNode,endNode) onmouseout=bfsclickup()><b>Visualize BFS algorithm</b></button></center>
+
+<div id="res" align="right">
+<button id="reset" onclick=Reset()><b>Reset</b></button>
+<button id="resetAll" onclick=ResetAll()><b>Reset All</b></button>
+</div>
+<div id="menu">
+<table id="start" border="1" cellpadding="10" CELLSPACING="0">
+<td bgcolor="green"></td>
+</table>
+<b>Start node</b>
+<table id="end" border="1" cellpadding="10" CELLSPACING="0">
+<td bgcolor="red"></td>
+</table>
+<b>End node</b>
+<table id="wall" border="1" cellpadding="10" CELLSPACING="0">
+<td bgcolor="black"></td>
+</table>
+<b>Wall</b>
+</div>
+<div align="right"><i>*If you want to change the start node or the end node then click over them once and thereafter click over the cell where you want to put them.<br>
+  *click over the cells to create the wall and click over them again to remove the wall.</i></div>
+<div style="overflow-x:auto;">
+<TABLE  align="center" id="grid" BORDER="1" CELLPADDING="10" CELLSPACING="0" >
+<script>
+var c=-1;
+for(let i=0;i<20;i++)
+{
+
+  document.write("<TR id=R-");   //setting table id as R-i 
+
+  document.write(i);   
+document.write(">");   
+   for(let j=0;j<50;j++)
+    {
+      document.write("<TD id=C-");    // setting table id as C-ij   i=row no , j= col no
+       c++;
+      document.write(c);
+      document.write(" onclick=cellClick(this.id,)> </TD>");   
+    }
+    document.write("</TR>");
+}
+</script>
+</TABLE>
+</div>
+
+<script>
+
+function cellClick(id,color){
+var c=document.getElementById(id);
+var obj=window.getComputedStyle(c,null);
+let bgColor=obj.getPropertyValue("background-color");
+console.log(bgColor);
+console.log(typeof bgColor);
+if(bgColor=="rgb(0, 128, 0)"){
+  if(endFlag!=0)
+  document.getElementById(id).innerHTML="<style> #"+id+" {background-color:rgba(0, 0, 0, 0);}</style>";
+  else{
+  document.getElementById(id).innerHTML="<style> #"+id+" {background-color:red;}</style>";
+  endNode=id;
+  endFlag=1;
+  }
+  startFlag=0;
+  return;
+}
+if(bgColor=="rgb(255, 0, 0)")
+{
+  if(startFlag!=0)
+  document.getElementById(id).innerHTML="<style> #"+id+" {background-color:rgba(0, 0, 0, 0);}</style>";
+  else{
+  startNode=id;
+  document.getElementById(id).innerHTML="<style> #"+id+" {background-color:green;}</style>"
+  startFlag=1;
+  }
+  endFlag=0;
+  return;
+}
+if(endFlag==0)
+{
+  document.getElementById(id).innerHTML="<style> #"+id+" {background-color:red;}</style>";
+  endFlag=1;
+  endNode=id;
+  return;
+}
+if(startFlag==0)
+{
+  document.getElementById(id).innerHTML="<style> #"+id+" {background-color:green;}</style>";
+  startFlag=1;
+  startNode=id;
+  return;
+}
+
+ if(bgColor!="rgb(0, 128, 0)" &&bgColor!= "rgb(255, 0, 0)" &&bgColor!="rgb(0, 0, 0)" )
+       document.getElementById(id).innerHTML="<style> #"+id+" {background-color:black;}</style>";
+ if(bgColor=="rgb(0, 0, 0)")
+     document.getElementById(id).innerHTML="<style> #"+id+" {background-color:rgba(0, 0, 0, 0);}</style>";
+}
+</script>
+<script>
+  let run=0;
+</script>
+<script src="dijkstras.js"></script>
+<script src="bfs.js"></script>
+<script src="dfs.js"></script>
+<script src="reset.js"></script>
+</BODY>
+</HTML>
